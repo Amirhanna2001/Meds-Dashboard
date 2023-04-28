@@ -1,0 +1,34 @@
+{
+  "name": "meds-dashboard-end-points",
+  "version": "1.0.0",
+  "description": "Internet Application term project about meds ",
+  "main": "index.js",
+  "scripts": {
+    "prod": "node index",
+    "dev": "nodemon index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Amirhanna2001/Meds-Dashboard.git"
+  },
+  "author": "AmirAndEyad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Amirhanna2001/Meds-Dashboard/issues"
+  },
+  "homepage": "https://github.com/Amirhanna2001/Meds-Dashboard#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "cros": "^1.0.1",
+    "crypto-js": "^4.1.1",
+    "express": "^4.18.2",
+    "express-validator": "^6.15.0",
+    "multer": "^1.4.5-lts.1",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.22",
+    "upper-case": "^2.0.2",
+    "uuidv4": "^6.2.13"
+  }
+}
