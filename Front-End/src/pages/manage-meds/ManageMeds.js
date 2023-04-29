@@ -8,7 +8,7 @@ const ManageMeds = () => {
     return (
         <div className='manage-meds p-5'>
             <div className='header d-flex justify-content-between mb-5'>
-                <h3 className='text-center mb-3'>Manage medicines</h3>
+                <h3 className='text-center mb-3'>Manage Medicines</h3>
                 <Link to={'add'} className='btn btn-success'>Add New medicines</Link>
             </div>
 

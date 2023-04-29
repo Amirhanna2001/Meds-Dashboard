@@ -1,6 +1,5 @@
 import React from 'react';
 import  Table  from 'react-bootstrap/Table';
-import "../../css/ManageMeds.css";
 import { Link } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 
