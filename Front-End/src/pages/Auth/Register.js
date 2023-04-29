@@ -12,6 +12,10 @@ const Register = () => {
         This is simple alert
      </Alert>
 
+     <Alert variant="success" className="p-2">
+                This is simple alert
+     </Alert>
+
      <Form>
       <Form.Group className="mb-3" controlId="register-name">
         <Form.Label>Name: </Form.Label>

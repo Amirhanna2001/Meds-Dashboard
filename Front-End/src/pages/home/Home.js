@@ -1,20 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, {  } from 'react';
 import Form from "react-bootstrap/Form";
 import MedsCard from '../../components/MedsCard';
-import axios from 'axios';
 
 const Home = () => {
-
-    const [meds, setMeds] = useState({
-        loading: true,
-        results: [],
-        err: null,
-        reload: 0
-    })
-
-    useEffect(() => {
-        axios.get("")
-    }, [])
 
     return (
         <div className='home-container p-5'>

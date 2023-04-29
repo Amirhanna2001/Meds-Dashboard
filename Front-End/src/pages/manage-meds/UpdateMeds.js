@@ -6,7 +6,7 @@ import Alert from 'react-bootstrap/Alert';
 const UpdateMeds = () => {
     return (
         <div className='login-container'>
-            <h1>Update Meds Form</h1>
+            <h1>Update medicines Form</h1>
             <Alert variant="danger" className="p-2">
                 This is simple alert
             </Alert>
@@ -17,7 +17,7 @@ const UpdateMeds = () => {
 
             <Form>
                 <Form.Group className="mb-3">
-                    <Form.Label>Text: </Form.Label>
+                    <Form.Label>Name : </Form.Label>
                     <Form.Control type="text" placeholder="Meds Name : " />
                 </Form.Group>
 
@@ -30,7 +30,7 @@ const UpdateMeds = () => {
                 </Form.Group>
 
                 <Button variant="btn btn-dark w-40" type="submit">
-                    Update Meds
+                    Update medicines
                 </Button>
             </Form>
         </div>

@@ -3,10 +3,10 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 
-const AddMeds = () => {
+const UpdateCategory = () => {
     return (
         <div className='login-container'>
-            <h1>Add New medicine Form</h1>
+            <h1>Update Category medicines</h1>
             <Alert variant="danger" className="p-2">
                 This is simple alert
             </Alert>
@@ -17,7 +17,7 @@ const AddMeds = () => {
 
             <Form>
                 <Form.Group className="mb-3">
-                    <Form.Label>Text: </Form.Label>
+                    <Form.Label>Name : </Form.Label>
                     <Form.Control type="text" placeholder="Meds Name : " />
                 </Form.Group>
 
@@ -25,16 +25,13 @@ const AddMeds = () => {
                     <textarea className='form-control' placeholder='Description' rows={5}></textarea>
                 </Form.Group>
 
-                <Form.Group className="mb-3">
-                    <input type='file' className='form-control'></input>
-                </Form.Group>
-
                 <Button variant="btn btn-dark w-40" type="submit">
-                    Add New medicine
+                    Update Category medicines
                 </Button>
             </Form>
+            
         </div>
     );
 };
 
-export default AddMeds;
+export default UpdateCategory;

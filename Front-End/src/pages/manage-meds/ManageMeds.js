@@ -8,8 +8,8 @@ const ManageMeds = () => {
     return (
         <div className='manage-meds p-5'>
             <div className='header d-flex justify-content-between mb-5'>
-                <h3 className='text-center mb-3'>Manage Meds</h3>
-                <Link to={'add'} className='btn btn-success'>Add New Meds</Link>
+                <h3 className='text-center mb-3'>Manage medicines</h3>
+                <Link to={'add'} className='btn btn-success'>Add New medicines</Link>
             </div>
 
             <Alert variant="danger" className="p-2">
@@ -27,6 +27,8 @@ const ManageMeds = () => {
                         <th>Image</th>
                         <th>Name</th>
                         <th>Description</th>
+                        <th>Price</th>
+                        <th>Expiration date</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -40,19 +42,19 @@ const ManageMeds = () => {
                         <td>OscalD</td>
                         <td>
                         What is Os-Cal Extra D3 ?<br />
-                        Calcium is a mineral that is necessary for many functions of the body, 
+                        Calcium is a mineral that is necessary for many functions of the body,<br />
                         especially bone formation and maintenance.<br />Vitamin D helps the body absorb calcium.<br />
-                        Os-Cal Extra D3 is used to treat or prevent a calcium deficiency.<br />
-                        There are many brands and forms of calcium and vitamin D combination available. 
-                        Not all brands are listed on this leaflet.<br />
                         </td>
+                        <td>50 EGP</td>
+                        <td>20/05/2023</td>
                         <td>
+                            <Link to={"/5"}  className='btn btn-sm btn-info mx-1'>Show</Link>
+                            <Link to={"5"}  className='btn btn-sm btn-primary mx-1'>Update</Link>
+                            <button className='btn btn-sm btn-secondary mx-1'>Request</button>
                             <button className='btn btn-sm btn-danger'>Delete</button>
-                            <Link to={"5"}  className='btn btn-sm btn-primary mx-2'>Update</Link>
-                            <Link to={"/5"}  className='btn btn-sm btn-info'>Show</Link>
-                            <button className='btn btn-sm btn-secondary mt-1'>Request</button>
                         </td>
                     </tr>
+                     {/*
                     <tr>
                         <td>2</td>
                         <td>
@@ -114,6 +116,7 @@ const ManageMeds = () => {
                             <Link to={"/5"}  className='btn btn-sm btn-info'>Show</Link>
                         </td>
                     </tr>
+                     */}
                 </tbody>
             </Table>
         </div>
