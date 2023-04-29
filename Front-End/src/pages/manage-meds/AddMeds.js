@@ -30,7 +30,7 @@ const AddMeds = () => {
                 </Form.Group>
 
                 <Button variant="btn btn-dark w-40" type="submit">
-                    Add New medicine
+                    Add New Medicine
                 </Button>
             </Form>
         </div>

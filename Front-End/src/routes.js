@@ -11,6 +11,10 @@ import ManageCategoriesMeds from "./pages/manageCategoriesMeds/ManageCategoriesM
 import AddCategory from "./pages/manageCategoriesMeds/AddCategory";
 import UpdateCategory from "./pages/manageCategoriesMeds/UpdateCategory";
 import ManagePatients from "./pages/managePatients/ManagePatients";
+import AddPatient from "./pages/managePatients/AddPatient";
+import UpdatePatient from "./pages/managePatients/UpdatePatient";
+import Request from "./pages/requestHistory/Request";
+import History from "./pages/requestHistory/History";
 
 export const routes = createBrowserRouter([
     {
@@ -35,6 +39,20 @@ export const routes = createBrowserRouter([
             {
                 path: "/register",
                 element: <Register />,
+            },
+            {
+                path : "/requestHistory",
+                children: [
+                    {
+                        path: "history",
+                        element: <History />
+                    },
+
+                    {
+                        path: "request",
+                        element: <Request />
+                    },
+                ]
             },
 
             {
@@ -87,12 +105,12 @@ export const routes = createBrowserRouter([
 
                     {
                         path: 'add',
-                        element: <AddCategory />
+                        element: <AddPatient />
                     },
                     
                     {
                         path: ':id',
-                        element: <UpdateCategory />
+                        element: <UpdatePatient />
                     }
                 ]
             },
