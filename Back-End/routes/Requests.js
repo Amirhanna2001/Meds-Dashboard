@@ -1,6 +1,10 @@
 const router = require('express').Router();
 const conn = require('../db/connection');
+const Admin = require('../middleware/admin');
 const adminAuth = require('../middleware/admin');
+const Authorized = require('../middleware/authorize');
+const util = require("util"); // helper
+
 
 router.get('/',(req,res)=>{
     conn.query('SELECT * FROM requests ',(error,result,fields)=>{
@@ -8,7 +12,7 @@ router.get('/',(req,res)=>{
     });
 });
 
-router.post('/CreateRequest',(req,res)=>{
+router.post('/CreateRequest',Authorized,(req,res)=>{
     data = req.body;
     conn.query(
         'INSERT INTO requests  set ? ',
@@ -27,7 +31,7 @@ router.post('/CreateRequest',(req,res)=>{
 
 });
 
-router.get('/GetRequest/:id',(req,res)=>{
+router.get('/GetRequest/:id',Authorized,(req,res)=>{
     const {id} = req.params;
     conn.query('SELECT * FROM requests WHERE ?',{id:id},(error,result,fields)=>{
         if(error) {
@@ -42,7 +46,7 @@ router.get('/GetRequest/:id',(req,res)=>{
 
 });
 
-router.put('/EditRequest/:id',(req,res)=>{
+router.put('/EditRequest/:id',Admin,(req,res)=>{
     const {id} = req.params;
     const data = req.body; 
     conn.query('UPDATE requests SET ? WHERE ?',
@@ -67,7 +71,7 @@ router.put('/EditRequest/:id',(req,res)=>{
 
 });
 
-router.delete('/RefuseRequest/:id',adminAuth,(req,res)=>{
+router.delete('/RefuseRequest/:id',Admin,(req,res)=>{
     const {id} = req.params;
     conn.query('UPDATE FROM requests WHERE ? SET ?',[{id:id},{request_status : 2}],
     (error,result,fields)=>{
@@ -84,5 +88,14 @@ router.delete('/RefuseRequest/:id',adminAuth,(req,res)=>{
         res.send("Refused");
     })
 
+});
+router.get('/History',Authorized,async(req,res)=>{
+    const query = util.promisify(conn.query).bind(conn);
+    console.log(res.locals.user);
+    const hist = await query('SELECT * FROM history WHERE user_id = ? ',[res.locals.user.ID])
+    //conn.query('SELECT * FROM requests WHERE  user_id = ?',{user_id:res.locals.user.ID},(error,result,fields)=>{
+    //     res.json(res);
+    // });
+    res.status(200).json(hist);
 });
 module.exports = router

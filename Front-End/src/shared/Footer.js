@@ -2,7 +2,7 @@ import React from 'react';
 import '../css/Footer.css';
 
 const Footer = () => {
-    return <div className="footer">All Copyright reserved to Meds App</div>
+    return <div className="border-bottom footer text-muted">All Copyright &copy; reserved to Meds 2023</div>
 };
 
 export default Footer;

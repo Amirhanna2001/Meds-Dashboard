@@ -51,6 +51,8 @@ router.post(
             },
           ],
         });
+      console.log(req.body);
+
       }
     } catch (err) {
       res.status(500).json({ err: err });
@@ -76,6 +78,7 @@ router.post(
       // 1- VALIDATION REQUEST [manual, express validation]
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
+        
         return res.status(400).json({ errors: errors.array() });
       }
 

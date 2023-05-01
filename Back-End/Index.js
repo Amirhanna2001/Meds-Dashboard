@@ -15,6 +15,7 @@ const users = require("./routes/Users");
 const Categories = require("./routes/Categories");
 const Medicines = require("./routes/Medicines");
 const Requests = require("./routes/Requests");
+const History = require("./routes/History");
 
 // ====================  RUN THE APP  ====================
 app.listen(4000, "localhost", () => {
@@ -27,3 +28,4 @@ app.use("/Users",users);
 app.use("/Categories",Categories);
 app.use("/Medicines",Medicines);
 app.use("/Requests",Requests);
+// app.use("/History",History);

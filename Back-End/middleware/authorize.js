@@ -9,6 +9,7 @@ const Authorized = async (req,res,next)=>{
 
     if(user[0]){
         res.locals.user = user[0];
+        //console.log(res.locals.user);
         next();
     }
     else{

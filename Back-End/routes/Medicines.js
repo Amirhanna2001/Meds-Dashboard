@@ -8,11 +8,18 @@ const util = require("util"); // helper
 const fs = require("fs"); // file system
 
 
-router.get('/',(req,res)=>{
-    conn.query('SELECT * FROM medicines',(error,result,fields)=>{
-        res.json(result)
-    });
-});
+router.get("", async (req, res) => {
+    const query = util.promisify(conn.query).bind(conn);
+    let search = "";
+    if (req.query.search) {
+      // QUERY PARAMS
+      search = `where name LIKE '%${req.query.search}%' or description LIKE '%${req.query.search}%'`;
+    }
+    const Medecines = await query(`select * from medicines ${search}`);
+    
+    res.status(200).json(Medecines);
+  });
+  
 
 router.get('/:id',async (req,res)=>{
     const query = util.promisify(conn.query).bind(conn);
@@ -29,7 +36,7 @@ router.get('/:id',async (req,res)=>{
 //LocalHost400:Medicine/Create
 router.post('/Create',
     Admin,
-    upload.single("Image"),
+    upload.single("image"),
     body('name').isString().withMessage("Please Enter a Valid Name !"),
     body('description').isLength({min:10}).withMessage('Description At Least 10 chars'),
     body('price').isNumeric({min:1}).withMessage('Price Is Numiric Only '),
@@ -38,6 +45,7 @@ router.post('/Create',
 
     async (req,res)=>{
         try{
+            console.log(req.body);
         const errors = validationResult(req);
 
         if(!errors.isEmpty)
@@ -47,10 +55,14 @@ router.post('/Create',
             res.status(500).json({errors:[{
                 msg:'Image Is Required'
             }]});
+
+        console.log(req.body);
         const query = util.promisify(conn.query).bind(conn);
         const medicin =await query('SELECT * FROM medicines WHERE  Name = ?',[req.body.name]);
+
         if(medicin[0])
             res.status(500).json({msg:"This Name Is Already Exsits !"});
+
         const cat =await query('SELECT * FROM category WHERE Id =?',[req.body.CategoryId]);
         if(!cat[0])
             res.status(500).json({msg:'This Category Not Found '});
@@ -80,7 +92,7 @@ router.get('/GetMedicine/:id',async (req,res)=>{
         res.status(200).json(medicine);
     });
 
-router.put('/Edit/:id',
+router.put('/Edit/:id',authorized,
         upload.single("Image"),
         body('Name').isString().withMessage("Please Enter a Valid Name !"),
         body('Description').isLength({min:10}).withMessage('Description At Least 10 chars'),
@@ -99,7 +111,7 @@ router.put('/Edit/:id',
             const medicine =await query('SELECT * FROM medicines WHERE Id =?',[req.params.id]);
             console.log(req.params.id);
             if(!medicine[0])
-                res.status(500).json({msg:'No Medicine With This ID'});
+                res.status(404).json({msg:'No Medicine With This ID'});
             
             const medicinToInsert ={
                 Name:req.body.Name,
@@ -109,10 +121,15 @@ router.put('/Edit/:id',
                 CategoryId:req.body.CategoryId,
 
             } 
+            console.log(req.file);
             if (req.file) {
                 medicinToInsert.image_url = req.file.filename;
-                fs.unlinkSync("./upload/" + med[0].image_url); // delete old image
+                fs.unlink("./Upload/" + medicine[0].image_url); // delete old image
+                console.log("Inside");
+
               }
+            console.log("File1");
+
              await query('UPDATE medicines SET ? WHERE Id = ?',[medicinToInsert,req.params.id]);
 
             res.status(200).json({msg:"Medicine Updated !"});
@@ -122,7 +139,7 @@ router.put('/Edit/:id',
             res.status(500).json(ex);
 }});
 
-router.delete('/Delete/:id',async(req,res)=>{
+router.delete('/Delete/:id',Admin,async(req,res)=>{
     const query = util.promisify(conn.query).bind(conn);
     const medicine =await query('SELECT * FROM medicines WHERE Id = ?',[req.params.id]);
     if(!medicine[0])
