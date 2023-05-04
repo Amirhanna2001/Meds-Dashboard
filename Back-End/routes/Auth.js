@@ -77,6 +77,7 @@ router.post(
     try {
       // 1- VALIDATION REQUEST [manual, express validation]
       const errors = validationResult(req);
+      console.log(req.body.phone);
       if (!errors.isEmpty()) {
         
         return res.status(400).json({ errors: errors.array() });

@@ -15,6 +15,8 @@ import AddPatient from "./pages/managePatients/AddPatient";
 import UpdatePatient from "./pages/managePatients/UpdatePatient";
 import Request from "./pages/request/Request";
 import History from "./pages/history/History";
+import Guest from "./middleware/Guest";
+import Admin from "./middleware/Admin";
 
 
 export const routes = createBrowserRouter([
@@ -32,74 +34,85 @@ export const routes = createBrowserRouter([
                 element: <MedsDetails />,
             },
 
+               // GUEST MIDDLEWARE
             {
-                path: "/login",
-                element: <Login />,
-            },  
-
-            {
-                path: "/register",
-                element: <Register />,
-            },
-            {
-                path: "/manage-meds",
+                element: <Guest />,
                 children: [
-                    {
-                        path: "",
-                        element: <ManageMeds />
-                    },
-
-                    {
-                        path: 'add',
-                        element: <AddMeds />
-                    },
-                    
-                    {
-                        path: ':id',
-                        element: <UpdateMeds />
-                    }
-                ]
+                {
+                    path: "/login",
+                    element: <Login />,
+                },
+                {
+                    path: "/register",
+                    element: <Register />,
+                },
+                ],
             },
-
             {
-                path: "/manage-categories-meds",
-                children: [
-                    {
-                        path: "",
-                        element: <ManageCategoriesMeds />
-                    },
-
-                    {
-                        path: 'add',
-                        element: <AddCategory />
-                    },
-                    
-                    {
-                        path: ':id',
-                        element: <UpdateCategory />
-                    }
-                ]
+              element:<Admin/>  ,
+              children:[
+                {
+                    path: "/manage-meds",
+                    children: [
+                        {
+                            path: "",
+                            element: <ManageMeds />
+                        },
+    
+                        {
+                            path: 'add',
+                            element: <AddMeds />
+                        },
+                        
+                        {
+                            path: ':id',
+                            element: <UpdateMeds />
+                        }
+                    ]
+                },
+    
+                {
+                    path: "/manage-categories-meds",
+                    children: [
+                        {
+                            path: "",
+                            element: <ManageCategoriesMeds />
+                        },
+    
+                        {
+                            path: 'add',
+                            element: <AddCategory />
+                        },
+                        
+                        {
+                            path: ':id',
+                            element: <UpdateCategory />
+                        }
+                    ]
+                },
+    
+                {
+                    path: "/managePatients",
+                    children: [
+                        {
+                            path: "",
+                            element: <ManagePatients />
+                        },
+    
+                        {
+                            path: 'add',
+                            element: <AddPatient />
+                        },
+                        
+                        {
+                            path: ':id',
+                            element: <UpdatePatient />
+                        }
+                    ]
+                },
+              ]
             },
-
-            {
-                path: "/managePatients",
-                children: [
-                    {
-                        path: "",
-                        element: <ManagePatients />
-                    },
-
-                    {
-                        path: 'add',
-                        element: <AddPatient />
-                    },
-                    
-                    {
-                        path: ':id',
-                        element: <UpdatePatient />
-                    }
-                ]
-            },
+            
 
             {
                 path: "/request",

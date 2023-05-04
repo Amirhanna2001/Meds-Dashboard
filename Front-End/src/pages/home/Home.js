@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import Form from "react-bootstrap/Form";
 import MedsCard from '../../components/MedsCard';
 import axios from 'axios';
-import { Spinner } from 'react-bootstrap';
+import { Alert, Spinner } from 'react-bootstrap';
 
 
 const Home = () => {
@@ -15,7 +15,11 @@ const Home = () => {
 
     useEffect(() =>{
         setMeds({...meds,loading:true})
-        axios.get("http://localhost:4000/Medicines/")
+        axios.get("http://localhost:4000/Medicines/",{
+            params:{
+                search:search
+            }
+        })
         .then((res)=>{
             console.log(meds);
         setMeds({...meds,results: res.data,loading:false})
@@ -69,11 +73,19 @@ const Home = () => {
                         ExpireDate =  {med.ExpireDate}
                         CategoryId = {med.CategoryId}
                         image_url = {med.image_url} 
+                        
                     />
                   </div>
                ))}
             </div>
             </>
+        )}
+        {meds.loading === false &&
+        meds.err == null &&
+        meds.results.length === 0 && (
+          <Alert variant="info" className="p-2">
+            No Medicines Found !
+          </Alert>
         )}
             
         </div>

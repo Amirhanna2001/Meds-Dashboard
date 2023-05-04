@@ -12,7 +12,7 @@ router.get('/',(req,res)=>{
     });
 });
 
-router.post('/CreateRequest',Authorized,(req,res)=>{
+router.post('/',Authorized,(req,res)=>{
     data = req.body;
     conn.query(
         'INSERT INTO requests  set ? ',
@@ -88,7 +88,7 @@ router.delete('/RefuseRequest/:id',Admin,(req,res)=>{
         res.send("Refused");
     })
 
-});
+}); 
 router.get('/History',Authorized,async(req,res)=>{
     const query = util.promisify(conn.query).bind(conn);
     console.log(res.locals.user);
