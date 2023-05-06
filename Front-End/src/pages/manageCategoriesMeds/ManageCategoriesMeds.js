@@ -1,9 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import  Table  from 'react-bootstrap/Table';
+import "../../css/ManageMeds.css";
 import { Link } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
-
+import { getAuthUser } from '../../helper/Storage';
+import axios from "axios";
 const ManageCategoriesMeds = () => {
+    const auth = getAuthUser();
+  const [cats, setCats] = useState({
+    loading: true,
+    results: [],
+    err: null,
+    reload: 0,
+  });
+
+  useEffect(() => {
+    setCats({ ...cats, loading: true });
+    axios
+      .get("http://localhost:4000/Categories/")
+      .then((resp) => {
+        setCats({ ...cats, results: resp.data, loading: false, err: null });
+      })
+      .catch((err) => {
+        setCats({
+          ...cats,
+          loading: false,
+          err: " something went wrong, please try again later ! ",
+        });
+      });
+  }, [cats.reload]);
+
+  const deleteCat = (id) => {
+    axios
+      .delete("http://localhost:4000/Categories/Delete/"+ id, {
+        headers: {
+          token: auth.token,
+        },
+      })
+      .then((resp) => {
+        setCats({ ...cats, reload: cats.reload + 1 });
+      })
+      .catch((err) => {});
+  };
     return (
         <div className='manage-meds p-5'>
             <div className='header d-flex justify-content-between mb-5'>
@@ -29,23 +67,31 @@ const ManageCategoriesMeds = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>OscalD</td>
-                        <td>
-                        What is Os-Cal Extra D3 ?<br />
-                        Calcium is a mineral that is necessary for many functions of the body, 
-                        especially bone formation and maintenance.<br />Vitamin D helps the body absorb calcium.<br />
-                        Os-Cal Extra D3 is used to treat or prevent a calcium deficiency.<br />
-                        There are many brands and forms of calcium and vitamin D combination available. 
-                        Not all brands are listed on this leaflet.<br />
-                        </td>
-                        <td>
-                            <Link to={"/5"}  className='btn btn-sm btn-info mx-1'>Show</Link>
-                            <Link to={"5"}  className='btn btn-sm btn-primary mx-1'>Update</Link>
-                            <button className='btn btn-sm btn-danger'>Delete</button>
-                        </td>
-                    </tr>
+          {cats.results.map((cat) => (
+            <tr key={cat.Id}>
+              <td>{cat.Id}</td>
+              <td> {cat.Name} </td> 
+              <td>{cat.Description}</td>
+              <td>
+                <button
+                  className="btn btn-sm btn-danger"
+                  onClick={(e) => {
+                    deleteCat(cat.Id);
+                  }}>
+                  Delete
+                </button>
+                <Link
+                  to={"" + cat.Id}
+                  className="btn btn-sm btn-primary mx-2">
+                  Update
+                </Link>
+                <Link to={"" + cat.Id} className="btn btn-sm btn-info">
+                  show
+                </Link>
+              </td>
+            </tr>
+          ))}
+                    
                 </tbody>
 
             </Table>

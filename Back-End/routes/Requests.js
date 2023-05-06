@@ -12,13 +12,14 @@ router.get('/',(req,res)=>{
     });
 });
 
-router.post('/',Authorized,(req,res)=>{
+router.post('/:med_id',Authorized,(req,res)=>{
     data = req.body;
+    let medicine_id = req.params.med_id
     conn.query(
         'INSERT INTO requests  set ? ',
         {
             UserId:         data.UserId,
-            medicine_id:    data.medicine_id,
+            medicine_id:    medicine_id,
             request_status: 2
 
         },(error,result,fields)=>{
@@ -73,7 +74,7 @@ router.put('/EditRequest/:id',Admin,(req,res)=>{
 
 router.delete('/RefuseRequest/:id',Admin,(req,res)=>{
     const {id} = req.params;
-    conn.query('UPDATE FROM requests WHERE ? SET ?',[{id:id},{request_status : 2}],
+    conn.query('UPDATE requests SET ? WHERE ? ',[{id:id},{request_status : 2}],
     (error,result,fields)=>{
         if(error){
             res.statusCode = 500;

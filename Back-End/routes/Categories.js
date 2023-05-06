@@ -11,7 +11,7 @@ router.get('/',(req,res)=>{
     });
 });
 
-router.post('/Create',Admin,
+router.post('/',Admin,
 body('name').isString()
 .withMessage('Enter Invalid Name')
 .isLength({min:5}).withMessage('enter name at least 5 letters'),
@@ -27,7 +27,7 @@ async (req,res)=>{
             return res.status(500).json({errors:isValid.array()});
 
         const query = util.promisify(conn.query).bind(conn);    
-        const ExsitsCategory = query("SELECT * FROM category WHERE Name = ?",req.body.name);
+        const ExsitsCategory = query("SELECT * FROM category WHERE Name = ?",[req.body.Name]);
 
         if(ExsitsCategory[0])
             res.status(500).json({msg:"This Category Is Already Exsists"});
@@ -49,7 +49,7 @@ async (req,res)=>{
 }
 );
 
-router.get('/GetCategory/:id',async (req,res)=>{
+router.get('/:id',async (req,res)=>{
     const query = util.promisify(conn.query).bind(conn);
     const cat =await query("SELECT * FROM category where id =? ",[req.params.id]);    
         if(!cat[0])
@@ -58,7 +58,7 @@ router.get('/GetCategory/:id',async (req,res)=>{
         res.json(cat);
     });
 
-router.put('/Edit/:id',Admin,body('name').isString()
+    router.put('/:id',Admin,body('name').isString()
     .withMessage('Enter valid Name')
     .isLength({min:5}).withMessage('enter name at least 5 letters'),
     body("description")
@@ -84,7 +84,7 @@ router.put('/Edit/:id',Admin,body('name').isString()
                 description:req.body.description
             }
             console.log(catToInsert);
-            await query("update category set ? where Id = ?",[catToInsert,cat[0].id]);//Not Updated In DataBase
+            await query("update category set ? where Id = ?",[catToInsert,cat[0].Id]);//Not Updated In DataBase
             res.status(200).json({
                 msg: "Category Updated successfully !",
             });
@@ -95,17 +95,16 @@ router.put('/Edit/:id',Admin,body('name').isString()
         
     }
 );
-
-router.delete('/Delete/:id',Admin,async(req,res)=>{
+router.delete('/:id',Admin,async(req,res)=>{
     try{
         const query = util.promisify(conn.query).bind(conn);
         const cat = await query("select * from category where id = ?", [
             req.params.id,
         ]);
         if(!cat[0])
-        res.status(404).json({msg:"No Category Found With This Id"});
-        const query2 = util.promisify(conn.query).bind(conn);
-        await query2("DELETE FROM category WHERE Id = ?",[cat[0].id]);
+           res.status(404).json({msg:"No Category Found With This Id"});
+
+        await query("delete from category where id = ?",[cat[0].Id]);
         res.status(200).json({msg:"Deleted"});
     }
     catch(err){

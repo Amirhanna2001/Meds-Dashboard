@@ -1,12 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import  Table  from 'react-bootstrap/Table';
 import "../../css/ManageMeds.css";
 import { Link } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
+import { getURL } from '../../helper/SiteURL';
+import { getAuthUser } from '../../helper/Storage';
+import axios from "axios";
 
 const ManageMeds = () => {
+    const auth = getAuthUser();
+  const [meds, setMeds] = useState({
+    loading: true,
+    results: [],
+    err: null,
+    reload: 0,
+  });
+
+  useEffect(() => {
+    setMeds({ ...meds, loading: true });
+    axios
+      .get("http://localhost:4000/Medicines/")
+      .then((resp) => {
+        setMeds({ ...meds, results: resp.data, loading: false, err: null });
+      })
+      .catch((err) => {
+        setMeds({
+          ...meds,
+          loading: false,
+          err: " something went wrong, please try again later ! ",
+        });
+      });
+  }, [meds.reload]);
+
+  const deleteMed = (id) => {
+    axios
+      .delete("http://localhost:4000/Medicines/Delete/"+ id, {
+        headers: {
+          token: auth.token,
+        },
+      })
+      .then((resp) => {
+        setMeds({ ...meds, reload: meds.reload + 1 });
+      })
+      .catch((err) => {});
+  };
+
     return (
-        <div className='manage-meds p-5'>
+        <div className='manage-meds p-5'> 
             <div className='header d-flex justify-content-between mb-5'>
                 <h3 className='text-center mb-3'>Manage Medicines</h3>
                 <Link to={'add'} className='btn btn-success'>Add New medicines</Link>
@@ -33,27 +73,40 @@ const ManageMeds = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                        <img  className='image-avatar' alt="" 
-                src="https://www.drugs.com/images/pills/custom/pill24249-1/os-cal-extra-d3.png" />
-                        </td>
-                        <td>OscalD</td>
-                        <td>
-                        What is Os-Cal Extra D3 ?<br />
-                        Calcium is a mineral that is necessary for many functions of the body,<br />
-                        especially bone formation and maintenance.<br />Vitamin D helps the body absorb calcium.<br />
-                        </td>
-                        <td>50 EGP</td>
-                        <td>20/05/2023</td>
-                        <td>
-                            <Link to={"/5"}  className='btn btn-sm btn-info mx-1'>Show</Link>
-                            <Link to={"5"}  className='btn btn-sm btn-primary mx-1'>Update</Link>
-                            <button className='btn btn-sm btn-secondary mx-1'>Request</button>
-                            <button className='btn btn-sm btn-danger'>Delete</button>
-                        </td>
-                    </tr>
+          {meds.results.map((med) => (
+            <tr key={med.id}>
+              <td>{med.id}</td>
+              <td>
+                <img
+                  src={"http://localhost:4000/"+med.image_url}
+                  alt={med.Name}
+                  className="image-avatar"
+                />
+              </td>
+              <td> {med.Name} </td>
+              <td>{med.Description}</td>
+              <td>{med.Price} $</td>
+              <td>{med.ExpireDate}</td>
+              <td>
+                <button
+                  className="btn btn-sm btn-danger"
+                  onClick={(e) => {
+                    deleteMed(med.ID);
+                  }}>
+                  Delete
+                </button>
+                <Link
+                  to={"" + med.ID}
+                  className="btn btn-sm btn-primary mx-2">
+                  Update
+                </Link>
+                <Link to={"/" + med.ID} className="btn btn-sm btn-info">
+                  show
+                </Link>
+              </td>
+            </tr>
+          ))}
+                    
                 </tbody>
             </Table>
         </div>
