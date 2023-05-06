@@ -21,7 +21,7 @@ router.get("", async (req, res) => {
   });
   
 
-router.get('/:id',async (req,res)=>{
+router.get('/SameCategory/:id',async (req,res)=>{
     const query = util.promisify(conn.query).bind(conn);
 
     const cat = await query('SELECT * FROM category WHERE Id = ?',[req.params.id]);
@@ -29,12 +29,11 @@ router.get('/:id',async (req,res)=>{
         res.status(404).json({msg:'No Categories With this ID'});
 
     const meds =await query('SELECT * FROM medicines WHERE CategoryId = ?',[req.params.id]);
-    console.log(cat[0].id);
 
     res.status(200).json(meds);
 });
 //LocalHost400:Medicine/Create
-router.post('/Create',
+router.post('/',
     Admin,
     upload.single("image"),
     body('name').isString().withMessage("Please Enter a Valid Name !"),
@@ -45,7 +44,6 @@ router.post('/Create',
 
     async (req,res)=>{
         try{
-            console.log(req.body);
         const errors = validationResult(req);
 
         if(!errors.isEmpty)
@@ -56,9 +54,8 @@ router.post('/Create',
                 msg:'Image Is Required'
             }]});
 
-        console.log(req.body);
         const query = util.promisify(conn.query).bind(conn);
-        const medicin =await query('SELECT * FROM medicines WHERE  Name = ?',[req.body.name]);
+        const medicin =await query('SELECT * FROM medicines WHERE  Name = ?',[req.body.Name]);
 
         if(medicin[0])
             res.status(500).json({msg:"This Name Is Already Exsits !"});
@@ -66,24 +63,24 @@ router.post('/Create',
         const cat =await query('SELECT * FROM category WHERE Id =?',[req.body.CategoryId]);
         if(!cat[0])
             res.status(500).json({msg:'This Category Not Found '});
-        
         const medicinToInsert ={
             Name:req.body.Name,
-            description:req.body.Description,
-            price : req.body.Price,
+            Description:req.body.Description,
+            Price : req.body.Price,
             ExpireDate:req.body.ExpireDate,
             CategoryId:req.body.CategoryId,
             image_url:req.file.filename
 
         } 
-        await query('INSERT INTO medicines SET ?',medicinToInsert);
+        await query('INSERT INTO medicines SET ?',[medicinToInsert]);
+        res.status(200).json({msg:"Medicine Created !"});
     }
     catch(ex){
         res.status(500).json(ex);
     }
 });
 
-router.get('/GetMedicine/:id',async (req,res)=>{
+router.get('/:id',async (req,res)=>{
     const query = util.promisify(conn.query).bind(conn);
     const medicine =await query('SELECT * FROM medicines WHERE Id = ?',[req.params.id]); 
     
@@ -92,7 +89,7 @@ router.get('/GetMedicine/:id',async (req,res)=>{
         res.status(200).json(medicine);
     });
 
-router.put('/Edit/:id',authorized,
+router.put('/:id',authorized,
         upload.single("Image"),
         body('Name').isString().withMessage("Please Enter a Valid Name !"),
         body('Description').isLength({min:10}).withMessage('Description At Least 10 chars'),
@@ -139,14 +136,14 @@ router.put('/Edit/:id',authorized,
             res.status(500).json(ex);
 }});
 
-router.delete('/Delete/:id',Admin,async(req,res)=>{
+router.delete('/:id',Admin,async(req,res)=>{
     const query = util.promisify(conn.query).bind(conn);
     const medicine =await query('SELECT * FROM medicines WHERE Id = ?',[req.params.id]);
     if(!medicine[0])
         res.status(404).json({msg:'No Medicine With This ID'});
     
-        await query('DELETE  FROM medicines WHERE Id = ?',req.params.id);
-    res.json({msg:'Deleted '});
+        await query('DELETE  FROM medicines WHERE Id = ?',[req.params.id]);
+    res.status(200).json({msg:'Deleted '});
 });
 
 module.exports = router
