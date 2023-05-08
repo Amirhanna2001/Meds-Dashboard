@@ -50,13 +50,6 @@ const ManagePatients = () => {
                 <Link to={'add'} className='btn btn-success'>Add New Patient</Link>
             </div>
 
-            <Alert variant="danger" className="p-2">
-                This is simple alert
-            </Alert>
-
-            <Alert variant="success" className="p-2">
-                This is simple alert
-            </Alert>
 
             <Table striped bordered hover>
                 <thead>

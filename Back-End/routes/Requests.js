@@ -58,7 +58,7 @@ router.post('/NewRequest', Authorized, async (req, res) => {
 
 // });
 
-router.put('/Accept/:id', Admin, async (req, res) => {
+router.put('/Accept/:id', async (req, res) => {
     const { id } = req.params;
     const query = util.promisify(conn.query).bind(conn);
     const requ = await query("SELECT * FROM requests WHERE id = ?", [id]);
@@ -71,7 +71,7 @@ router.put('/Accept/:id', Admin, async (req, res) => {
 });
 
 
-router.put('/Refuse/:id', Admin, async (req, res) => {
+router.put('/Refuse/:id',  async (req, res) => {
     const { id } = req.params;
     const query = util.promisify(conn.query).bind(conn);
     const requ = await query("SELECT * FROM requests WHERE id = ?", [id]);
@@ -93,7 +93,7 @@ router.delete('/:id', Authorized, async (req, res) => {
     res.status(200).json({ msg: "Deleted " })
 })
 
-router.get('/History/:id', Authorized, async (req, res) => {
+router.get('/History/:id', async (req, res) => {
     const query = util.promisify(conn.query).bind(conn);
     // const hist = await query('SELECT * FROM history WHERE user_id = ? ',[res.locals.user.ID])
     //conn.query('SELECT * FROM requests WHERE  user_id = ?',{user_id:res.locals.user.ID},(error,result,fields)=>{

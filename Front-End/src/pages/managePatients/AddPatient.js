@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const AddPatient = () => {
   const user = getAuthUser();
-  const navigate = useNavigate()
+  const navigate = useNavigate() 
   const [register, setRegister] = useState({
     email: "",
     password: "",

@@ -3,9 +3,11 @@ import Form from "react-bootstrap/Form";
 import MedsCard from '../../components/MedsCard';
 import axios from 'axios';
 import { Alert, Spinner } from 'react-bootstrap';
+import { getAuthUser } from '../../helper/Storage';
 
 
 const Home = () => {
+    const auth = getAuthUser();
     const [meds, setMeds] = useState({
         loading: true,
         results: [],
@@ -13,23 +15,44 @@ const Home = () => {
         reload: 0,
       });
 
-    useEffect(() =>{
-        setMeds({...meds,loading:true})
-        axios.get("http://localhost:4000/Medicines/",{
-            params:{
-                search:search
-            }
-        })
-        .then((res)=>{
-            console.log(meds);
-        setMeds({...meds,results: res.data,loading:false})
+      useEffect(() => {
+        if (auth) {
+            setMeds({ ...meds, loading: true })
+            axios.get("http://localhost:4000/Medicines/", {
+                params: {
+                    search: search,
+                    token: auth.token
+                }
+            })
+                .then((res) => {
+                    console.log(meds);
+                    setMeds({ ...meds, results: res.data, loading: false })
 
-        })
-        .catch(err=>{
-        setMeds({...meds,loading:false,err:"An Error Happened"})
-            
-        })
-    },[meds.reload]);
+                })
+                .catch(err => {
+                    setMeds({ ...meds, loading: false, err: "An Error Happened" })
+
+                })
+        }
+        else {
+            setMeds({ ...meds, loading: true })
+            axios.get("http://localhost:4000/Medicines/", {
+                params: {
+                    search: search
+                }
+            })
+                .then((res) => {
+                    console.log(meds);
+                    setMeds({ ...meds, results: res.data, loading: false })
+
+                })
+                .catch(err => {
+                    setMeds({ ...meds, loading: false, err: "An Error Happened" })
+
+                })
+        }
+
+    }, [meds.reload]);
     const [search, setSearch] = useState("");
 
     const searchMed =(e)=>{
@@ -48,7 +71,7 @@ const Home = () => {
       )}
       {
         meds.loading === false &&meds.err == null &&(
-            <>
+            <> 
                 {/* Filter */}
             <Form onSubmit={searchMed}>
                 <Form.Group className='mb-3 d-flex' > 

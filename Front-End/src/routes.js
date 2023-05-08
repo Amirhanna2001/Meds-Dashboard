@@ -34,7 +34,7 @@ export const routes = createBrowserRouter([
             },
             
             {
-                path: ":id",
+                path: ":id", 
                 element: <MedsDetails />,
             },
             {

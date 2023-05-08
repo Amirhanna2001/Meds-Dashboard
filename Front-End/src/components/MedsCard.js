@@ -11,11 +11,11 @@ const MedsCard = (prop) => {
 
     // console.log(prop.ID);
     const user = getAuthUser();
-    console.log(user.token);
 
+    
     const AddRequest = async (id) => {
         console.log(id);
-
+        if(user){
         const respon =  axios.post(`http://localhost:4000/Requests/NewRequest`,{
             id
         },
@@ -24,7 +24,8 @@ const MedsCard = (prop) => {
                     token: user.token
                 }
             });
-            console.log(respon);
+        }
+        
 
     }
 

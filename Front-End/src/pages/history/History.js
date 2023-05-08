@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,useEffect } from 'react';
+import Form from "react-bootstrap/Form";
+import MedsCard from '../../components/MedsCard';
+import axios from 'axios';
+import { Alert, Spinner } from 'react-bootstrap';
 import  Table  from 'react-bootstrap/Table';
-import "../../css/ManageMeds.css";
 import { Link } from 'react-router-dom';
-import Alert from 'react-bootstrap/Alert';
-import { getURL } from '../../helper/SiteURL';
 import { getAuthUser } from '../../helper/Storage';
-import axios from "axios";
 
 const History = () => { 
     const auth = getAuthUser();
@@ -13,10 +13,11 @@ const History = () => {
       loading: true,
       results: [],
       err: null,
-      reload: 0,
+      reload: 0, 
     });
 
     useEffect(() => {
+      console.log(History.results);
         sethist({ ...hist, loading: true });
         axios
           .get(`http://localhost:4000/Requests/history/${auth.ID}`)
@@ -62,7 +63,7 @@ const History = () => {
                 {hist.results.map((med) => (
             <tr key={med.ID}>
               <td>{med.ID}</td>
-              <td> {med.med_id} </td>
+              <td> {med.Searched} </td>
               <td>
                 <button
                   className="btn btn-sm btn-danger"

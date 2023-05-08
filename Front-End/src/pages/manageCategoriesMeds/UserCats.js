@@ -33,13 +33,7 @@ const ManageCategoriesMeds = () => {
     return (
         <div className='manage-meds p-5'>
             
-            <Alert variant="danger" className="p-2">
-                This is simple alert
-            </Alert>
-
-            <Alert variant="success" className="p-2">
-                This is simple alert
-            </Alert>
+            
 
             <Table striped bordered hover>
                 <thead>

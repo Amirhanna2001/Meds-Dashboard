@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import  Table  from 'react-bootstrap/Table';
+import Table from 'react-bootstrap/Table';
 import "../../css/ManageMeds.css";
 import { Link } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import { getAuthUser } from '../../helper/Storage';
 import axios from "axios";
 const ManageCategoriesMeds = () => {
-    const auth = getAuthUser();
+  const auth = getAuthUser();
   const [cats, setCats] = useState({
     loading: true,
     results: [],
@@ -32,7 +32,7 @@ const ManageCategoriesMeds = () => {
 
   const deleteCat = (id) => {
     axios
-      .delete("http://localhost:4000/Categories/"+ id, {
+      .delete("http://localhost:4000/Categories/" + id, {
         headers: {
           token: auth.token,
         },
@@ -40,37 +40,31 @@ const ManageCategoriesMeds = () => {
       .then((resp) => {
         setCats({ ...cats, reload: cats.reload + 1 });
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
-    return (
-        <div className='manage-meds p-5'>
-            <div className='header d-flex justify-content-between mb-5'>
-                <h3 className='text-center mb-3'>Manage Categories medicines</h3>
-                <Link to={'add'} className='btn btn-success'>Add New Category medicines</Link>
-            </div>
-            
-            <Alert variant="danger" className="p-2">
-                This is simple alert
-            </Alert>
+  return (
+    <div className='manage-meds p-5'>
+      <div className='header d-flex justify-content-between mb-5'>
+        <h3 className='text-center mb-3'>Manage Categories medicines</h3>
+        <Link to={'add'} className='btn btn-success'>Add New Category medicines</Link>
+      </div>
 
-            <Alert variant="success" className="p-2">
-                This is simple alert
-            </Alert>
+      
 
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
           {cats.results.map((cat) => (
             <tr key={cat.Id}>
               <td>{cat.Id}</td>
-              <td> {cat.Name} </td> 
+              <td> {cat.Name} </td>
               <td>{cat.Description}</td>
               <td>
                 <button
@@ -91,13 +85,13 @@ const ManageCategoriesMeds = () => {
               </td>
             </tr>
           ))}
-                     
-                </tbody>
 
-            </Table>
+        </tbody>
 
-        </div>
-    );
+      </Table>
+
+    </div>
+  );
 };
 
 export default ManageCategoriesMeds;

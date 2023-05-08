@@ -14,14 +14,14 @@ const AddMeds = () => {
     Price: "",
     ExpireDate: "",
     CategoryId: "",
-    image_url:null,
+    // Image:null,
     err: "",
     loading: false,
     success: null,
 
   });
 
-  const image = useRef(null);
+  const Image = useRef(null);
 
   const createMed = async (e) => {
     e.preventDefault();
@@ -34,7 +34,7 @@ const AddMeds = () => {
     formData.append("price", med.Price);
     formData.append("ExpireDate", med.ExpireDate);
     formData.append("CategoryId", med.CategoryId);
-    formData.append("image_url",med.image_url);
+    formData.append("Image",Image.current.files[0]);
     console.log(formData);
       axios.post("http://localhost:4000/Medicines", formData, {
         headers: {
@@ -50,13 +50,14 @@ const AddMeds = () => {
         Price: "",
         ExpireDate: "",
         CategoryId: "",
+        Image:null,
         err: "",
         loading: false,
         success: "Medicine Created Successfully!",
       });
-      image.current.value = null;})
+      Image.current.value = null;})
        .catch ((error)=>{
-      // console.error(error.response);
+      console.error(error.response);
       setMed({
         ...med,
         loading: false,
@@ -68,9 +69,9 @@ const AddMeds = () => {
 
   return (
     <div className="login-container">
-      <h1>Add New Medicine Form</h1>
+      <h1>Add New Medicine</h1>
 
-      {med.err && <Alert variant="danger" className="p-2">{med.err}</Alert>}
+      {/* {med.err && <Alert variant="danger" className="p-2">{med.err}</Alert>} */}
       {med.success && <Alert variant="success" className="p-2">{med.success}</Alert>}
 
       <Form onSubmit={createMed}>
@@ -126,9 +127,7 @@ const AddMeds = () => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <input type="file" className="form-control" 
-            onChange={(e) => setMed({ ...med, image_url: e.target.files[0] })}
-           />
+        <input type="file" className="form-control" ref={Image} required />
         </Form.Group>
 
         <Button variant="dark" type="submit">

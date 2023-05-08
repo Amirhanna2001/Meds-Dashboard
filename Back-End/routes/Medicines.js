@@ -15,6 +15,19 @@ router.get("", async (req, res) => {
       // QUERY PARAMS
       search = `where name LIKE '%${req.query.search}%' or description LIKE '%${req.query.search}%'`;
     }
+    if (req.query.token) {
+        if (req.query.search) {
+            const user = await query("Select * from user where token = ?", [req.query.token]);
+            console.log(user);
+            let obj = {
+                user_id: user[0].ID,
+                Searched: req.query.search
+            }
+            await query("INSERT INTO history SET ?", [obj]);
+        }
+
+
+    }
     const Medecines = await query(`select * from medicines ${search}`);
     if(req.query.search){
         Medecines.forEach(element => {
@@ -40,7 +53,7 @@ router.get('/SameCategory/:id',async (req,res)=>{
 //LocalHost400:Medicine/Create
 router.post('/',
     Admin,
-    upload.single("Image"),
+    upload.single("image"),
     body('Name').isString().withMessage("Please Enter a Valid Name !"),
     body('Description').isLength({min:10}).withMessage('Description At Least 10 chars'),
     body('Price').isNumeric({min:1}).withMessage('Price Is Numiric Only '),
@@ -79,6 +92,7 @@ router.post('/',
             image_url:req.file.filename
 
         } 
+        upload()
         await query('INSERT INTO medicines SET ?',[medicinToInsert]);
         return res.status(200).json({msg:"Medicine Created !"});
     }

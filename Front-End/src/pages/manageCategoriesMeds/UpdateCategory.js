@@ -22,7 +22,6 @@ const UpdateCategory = () => {
     
         setCat({ ...cat, loading: true });
     
-        const formData = new FormData();
         let obj = {
           name:cat.Name,
           description:cat.Description,

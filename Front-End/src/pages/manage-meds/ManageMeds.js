@@ -52,13 +52,13 @@ const ManageMeds = () => {
                 <Link to={'add'} className='btn btn-success'>Add New medicines</Link>
             </div>
 
-            <Alert variant="danger" className="p-2">
+            {/* <Alert variant="danger" className="p-2">
                 This is simple alert
             </Alert>
 
             <Alert variant="success" className="p-2">
                 This is simple alert
-            </Alert>
+            </Alert> */}
 
             <Table striped bordered hover>
                 <thead>
