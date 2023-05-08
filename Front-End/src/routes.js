@@ -19,12 +19,14 @@ import Request from "./pages/request/Request";
 import History from "./pages/history/History";
 import Guest from "./middleware/Guest";
 import Admin from "./middleware/Admin";
+import Err from "./pages/home/error";
 
 
 export const routes = createBrowserRouter([
     {
         path: "",
         element: <App />,
+        errorElement:<Err/>,
         children: [
             {
                 path: "/",
@@ -143,9 +145,9 @@ export const routes = createBrowserRouter([
                 element: <History />
             },
         ],
-    },
-    {
-        path: "*",
-        element: <Navigate to={"/"} />
     }
+    // {
+    //     path: "*",
+    //     element: <Navigate to={"/"} />
+    // }
 ]);

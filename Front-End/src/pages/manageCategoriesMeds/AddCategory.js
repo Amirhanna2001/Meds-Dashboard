@@ -15,18 +15,19 @@ const AddCategory = () => {
       loading: false,
       success: null,
     });
-  
+  console.log(cat);
   
     const createCat = (e) => {
       e.preventDefault();
-  
+      
       setCat({ ...cat, loading: true });
   
-      const formData = new FormData();
-      formData.append("name", cat.name);
-      formData.append("description", cat.description); 
+      let obj = {
+        name:cat.name,
+        description:cat.description
+      }
       axios
-        .post("http://localhost:4000/Categories/", formData, {
+        .post("http://localhost:4000/Categories/", obj, {
           headers: {
             token: auth.token
                   },

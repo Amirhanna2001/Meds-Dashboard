@@ -6,7 +6,7 @@ import Alert from 'react-bootstrap/Alert';
 import { getAuthUser } from '../../helper/Storage';
 import axios from "axios";
 const ManageCategoriesMeds = () => {
-    const auth = getAuthUser();
+    // const auth = getAuthUser();
   const [cats, setCats] = useState({
     loading: true,
     results: [],
@@ -58,7 +58,7 @@ const ManageCategoriesMeds = () => {
               <td>{cat.Description}</td>
               <td>
                 <Link
-                  to={"" + cat.Id}
+                  to={`/manage-categories-meds/${cat.Id}`}
                   className="btn btn-sm btn-primary mx-2">
                   Get All Medicines
                 </Link>

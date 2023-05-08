@@ -1,109 +1,117 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
-import { getAuthUser } from "../../helper/Storage";
 import axios from "axios";
+import { getAuthUser, setAuthUser } from "../../helper/Storage";
+import { useNavigate } from "react-router-dom";
 
 const AddPatient = () => {
-    const auth = getAuthUser();
-    const [user, setuser] = useState({
+  const user = getAuthUser();
+  const navigate = useNavigate()
+  const [register, setRegister] = useState({
+    email: "",
+    password: "",
+    name: "",
+    phone:"",
+    loading: false, 
+    err: [],
+  });
 
-      Name: "",
-      email: "",
-      password: "",
-      phone: "",
-      err: "",
-      loading: false,
-      success: null,
-    });
-  
-    const image = useRef(null);
-  
-    const createUser = (e) => {
-      e.preventDefault();
-  
-      setuser({ ...user, loading: true });
-  
-      const formData = new FormData();
-      formData.append("Name", user.Name);
-      formData.append("email", user.email);
-      formData.append("role", user.role);
-      formData.append("phone", user.phone);
-      if (image.current.files && image.current.files[0]) {
-        formData.append("Image", image.current.files[0]);
+  console.log(register.err);
+  const RegisterFun = (e) => {
+    e.preventDefault();
+    setRegister({ ...register, loading: true, err: [] });
+    axios
+      .post("http://localhost:4000/Users", {
+        email: register.email,
+        password: register.password,
+        name: register.name,
+        phone:register.phone
+      },
+      {
+        headers: {
+          token: user.token
+                }
       }
-      axios
-        .post("http://localhost:4000/Users/", formData, {
-          headers: {
-            token: auth.token,
-          },
-        })
-        .then((resp) => {
-          setuser({
-            Name: "",
-            email: "",
-            password: "",
-            phone: "",
-            err: "",
-            loading: false,
-            success: "Medicine Created Successfully !",
-          });
-          image.current.value = null;
-        })
-        .catch((err) => {
-          setuser({
-            ...user,
-            loading: false,
-            success: null,
-            err: "Something went wrong, please try again later !",
-          });
+      )
+      .then((resp) => {
+        setRegister({ ...register, loading: false, err: [] });
+        // setAuthUser(resp.data);
+        navigate("/managePatients");
+      })
+      .catch((errors) => {
+        setRegister({
+          ...register,
+          loading: false,
+          err: errors.response.data.errors,
         });
-    };
-    return ( 
-        <div className='login-container'>
-            <h1>Add New Patient</h1>
-            <Alert variant="danger" className="p-2">
-                This is simple alert
-            </Alert>
+      });
+  };
 
-            <Alert variant="success" className="p-2">
-                This is simple alert
-            </Alert>
+  return (
+    <div className="login-container">
+      <h1>Add A New Patient</h1>
 
-            <Form >
-                <Form.Group className="mb-3" controlId="register-name">
-                    <Form.Label>Name : </Form.Label>
-                    <Form.Control type="text" placeholder="Full Name : " />
-                </Form.Group>
+      {/* {register.err.map((error, index) => (
+        <Alert key={index} variant="danger" className="p-2">
+          {error.msg}
+        </Alert>
+      ))} */}
 
-                <Form.Group className="mb-3" controlId="register-email">
-                    <Form.Label>Email : </Form.Label>
-                    <Form.Control type="email" placeholder="Email : " />
-                </Form.Group>
+      <Form onSubmit={RegisterFun}>
+        <Form.Group className="mb-3">
+          <Form.Control
+            type="text"
+            placeholder="Full Name"
+            value={register.name}
+            onChange={(e) => setRegister({ ...register, name: e.target.value })}
+          />
+        </Form.Group>
 
-                <Form.Group className="mb-3" controlId="register-phone">
-                    <Form.Label>phone : </Form.Label>
-                    <Form.Control type="number" placeholder="Phone : " />
-                </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Control
+            type="email"
+            placeholder="Email"
+            value={register.email}
+            onChange={(e) =>
+              setRegister({ ...register, email: e.target.value })
+            }
+          />
+        </Form.Group>
 
-                <Form.Group className="mb-3" controlId="register-name">
-                    <Form.Label>Type : </Form.Label>
-                    <Form.Control type="text" placeholder="Role" />
-                </Form.Group>
-                
-                <Form.Group className="mb-3" controlId="register-name">
-                    <Form.Label>Password : </Form.Label>
-                    <Form.Control type="text" placeholder="Password" />
-                </Form.Group>
 
-                <Button variant="btn btn-dark w-40" type="submit">
-                    Add New Patient
-                </Button>
-            </Form>
-            
-        </div>
-    );
+        <Form.Group className="mb-3">
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            value={register.password}
+            onChange={(e) =>
+              setRegister({ ...register, password: e.target.value })
+            }
+          />
+        </Form.Group>
+        
+        <Form.Group className="mb-3">
+          <Form.Control
+            type="text"
+            placeholder="Phone Number"
+            value={register.phone}
+            onChange={(e) =>
+              setRegister({ ...register, phone: e.target.value })
+            }
+          />
+        </Form.Group>
+
+        <Button
+          className="btn btn-dark w-100"
+          variant="primary"
+          type="submit"
+          disabled={register.loading === true}>
+          register
+        </Button>
+      </Form>
+    </div>
+  );
 };
-
 export default AddPatient;

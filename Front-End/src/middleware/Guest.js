@@ -6,5 +6,5 @@ const Guest = () => {
   const auth = getAuthUser();
   return <>{!auth ? <Outlet /> : <Navigate to={"/"} />}</>;
 };
-
-export default Guest;
+ 
+export default Guest; 

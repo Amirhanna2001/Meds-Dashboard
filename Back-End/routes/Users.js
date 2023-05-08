@@ -15,7 +15,7 @@ router.get('/',(req,res)=>{
 });
 
 router.post(
-    "/Create",
+    "/",
     body("email").isEmail().withMessage("please enter a valid email!"),
     body("name")
       .isString()

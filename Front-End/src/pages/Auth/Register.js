@@ -13,7 +13,7 @@ const Register = () => {
     password: "",
     name: "",
     phone:"",
-    loading: false,
+    loading: false, 
     err: [],
   });
 

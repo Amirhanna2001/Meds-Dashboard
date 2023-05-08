@@ -6,5 +6,5 @@ const Guest = () => {
   const auth = getAuthUser();
   return <>{auth && auth.role === 1 ? <Outlet /> : <Navigate to={"/"} />}</>;
 };
-
+ 
 export default Guest;
