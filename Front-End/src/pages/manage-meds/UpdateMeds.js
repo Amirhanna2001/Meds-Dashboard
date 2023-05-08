@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
 import { getAuthUser } from "../../helper/Storage";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
 const UpdateMeds  = () => {
     let { id } = useParams();
@@ -52,6 +52,7 @@ const UpdateMeds  = () => {
           success: "Medicine updated successfully !",
           reload: med.reload + 1,
         });
+        
       })
       .catch((err) => {
         setMed({

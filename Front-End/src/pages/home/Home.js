@@ -74,7 +74,7 @@ const Home = () => {
                         CategoryId = {med.CategoryId}
                         image_url = {med.image_url} 
                         
-                    />
+                    /> 
                   </div>
                ))}
             </div>
