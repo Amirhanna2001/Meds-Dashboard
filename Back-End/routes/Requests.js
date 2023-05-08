@@ -4,7 +4,7 @@ const Admin = require('../middleware/admin');
 const adminAuth = require('../middleware/admin');
 const Authorized = require('../middleware/authorize');
 const util = require("util"); // helper
-
+//Request_Status (0=>Painding, 1=> Accepted , 2=> Refused)
 router.get("/",Admin,async (req,res)=>{
     const query = util.promisify(conn.query).bind(conn);
     const requests = await query("SELECT * FROM requests");
@@ -22,10 +22,9 @@ router.get('/:id',async(req,res)=>{
 
     res.status(200).json(requ);
 });
-
+//Requests
 router.post('/:med_id',Authorized,async(req,res)=>{
-    data = req.body;
-    let medicine_id = req.params.med_id
+    // let medicine_id = req.params.med_id
     const request = {
         user_id: res.locals.user.ID,
         medicine_id:req.params.med_id
@@ -34,7 +33,7 @@ router.post('/:med_id',Authorized,async(req,res)=>{
 
     const requ = await query('INSERT INTO  requests SET  ?',[request]);
 
-    res.status(200).json({msg:"Request Submetted "});
+    res.status(200).json(1);
 
 });
 
@@ -78,7 +77,15 @@ router.put('/Accept/:id', Admin, async (req, res) => {
     res.status(200).json({ msg: "Request Refused" });
   });
   
+router.delete('/:id',Authorized,async(req,res)=>{
+    const query = util.promisify(conn.query).bind(conn);
+    const reque = await query("SELECT * FROM requests where ID = ?",[req.params.id]);
+    if(!reque[0])
+        res.status(404).json({msg:"No Requests Found With This ID"})
 
+    await query("DELETE FROM requests WHERE ID = ?",[reque[0].ID])
+    res.status(200).json({msg:"Deleted "})
+})
 
 router.get('/History/:id',Authorized,async(req,res)=>{
     const query = util.promisify(conn.query).bind(conn);
@@ -91,5 +98,15 @@ router.get('/History/:id',Authorized,async(req,res)=>{
         res.status(404).json({msg:"No User With ID = "+req.params.id})
     hist = await query("SELECT * FROM history where user_id = ?",[req.params.id]);
     res.status(200).json(hist);
+});
+
+router.delete('/DeleteHistory/:id',Authorized,async(req,res)=>{
+    const query = util.promisify(conn.query).bind(conn);
+    // const hist = await query('SELECT * FROM history WHERE user_id = ? ',[res.locals.user.ID])
+    //conn.query('SELECT * FROM requests WHERE  user_id = ?',{user_id:res.locals.user.ID},(error,result,fields)=>{
+    //     res.json(res);
+    // });
+    hist = await query("delete from history where id = ?",[req.params.id]);
+    res.status(200).json({msg:"Deleted"});
 });
 module.exports = router

@@ -16,7 +16,7 @@ const MedsDetails = () => {
       useEffect(() => {
         setMed({ ...med, loading: true });
         axios
-          .get("http://localhost:4000/Medicines/GetMedicine/" + id)
+          .get("http://localhost:4000/Medicines/" + id)
           .then((resp) => {
             console.log(resp);
             setMed({ ...med, result: resp.data, loading: false, err: null });

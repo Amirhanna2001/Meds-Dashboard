@@ -20,20 +20,29 @@ const Header = () => {
       <Container>
         <Navbar.Brand>
         <Link className='nav-link' to={'/'}>Home</Link>
+
         </Navbar.Brand>
+        <Nav>
+        <Link className='nav-link' to={'/manage-categories-meds/UserCats'}>Categories</Link>
+
+        </Nav>
         <Nav className="me-auto">
           {user && user.role === 1 &&(
             <>
               <Link className='nav-link' to={'/manage-meds'}>Medicines</Link>
-              <Link className='nav-link' to={'/manage-categories-meds'}>Categories</Link>
+              <Link className='nav-link' to={'/manage-categories-meds'}>ManageCategories</Link>
               <Link className='nav-link' to={'/managePatients'}>Patients</Link>
+              
               
             </>
           )}
           {user &&(
             <>
               <Link className='nav-link' to={'/request'}>Request</Link>
-              <Link className='nav-link' to={'/Requests/history/'+user}>History</Link>
+              <Link className='nav-link' to={'/history'}>History</Link>
+              {/* <Link className='nav-link' to={'/manage-categories-meds/UserCats'}>Categories</Link> */}
+
+
             </>
           )}
           
@@ -44,6 +53,8 @@ const Header = () => {
           <Nav className="ms-auto">
           <Link className='nav-link' to={'/login'}>Login</Link>
           <Link className='nav-link' to={'/register'}>Register</Link>
+
+
         </Nav>
         </>)}
         {user &&(

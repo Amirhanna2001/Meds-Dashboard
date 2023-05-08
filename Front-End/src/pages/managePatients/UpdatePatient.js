@@ -20,61 +20,66 @@ const UpdatePatient = () => {
     });
   
 
-  const updateuser = (e) => {
-    e.preventDefault();
+    const Updateuser = (e) => { 
+      e.preventDefault();
+  
+      setuser({ ...user, loading: true });
+        let obj = {
+        name:user.Name,
+        email:user.email,
+        phone:user.phone,
 
-    setuser({ ...user, loading: true });
-
-    const formData = new FormData();
-      formData.append("Name", user.Name);
-      formData.append("email", user.email);
-      formData.append("role", user.role);
-      formData.append("phone", user.phone);
-    axios
-      .put("http://localhost:4000/Users/Edit/" + id, formData, {
-        headers: {
-          token: auth.token,
-        },
-      })
-      .then((resp) => {
-        setuser({
-          ...user,
-          loading: false,
-          success: "User updated successfully !",
-          reload: user.reload + 1,
+      }
+      console.log(id);
+      axios
+        .put(`http://localhost:4000/Users/${id}`, obj, {
+          headers: {
+            token: auth.token,
+                  },
+        })
+        .then((resp) => {
+          setuser({
+            ...user,
+            Name: "",
+            email: "",
+            phone:"",
+            err: "",
+            loading: false,
+            success: "Patient Updated Successfully !",
+            reload: user.reload + 1
+          });
+         })
+        .catch((err) => {
+          setuser({
+            ...user,
+            loading: false,
+            success: null,
+            err: "Something went wrong, please try again later !",
+          });
         });
-      })
-      .catch((err) => {
-        setuser({
-          ...user,
-          loading: false,
-          success: null,
-          err: "Something went wrong, please try again later !",
+    };
+    useEffect(() => {
+      axios
+        .get(`http://localhost:4000/Users/${id}` )
+        .then((resp) => {
+          console.log(resp);
+          setuser({
+            ...user,
+            Name: resp.data.Name,
+            email: resp.data.email,
+            phone:resp.data.phone
+          });
+          console.log("Seeet");
+        })
+        .catch((err) => {
+          setuser({
+            ...user,
+            loading: false,
+            success: null,
+            err: "Something went wrong, please try again later !",
+          });
         });
-      }); 
-  };
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:4000/Users/GetUser/" + id)
-      .then((resp) => {
-        setuser({
-          ...user,
-          Name: resp.data.Name,
-          email: resp.data.email,
-          role:resp.data.role,
-          phone:resp.data.phone,
-        });
-      })
-      .catch((err) => {
-        setuser({
-          ...user,
-          loading: false,
-          success: null,
-          err: "Something went wrong, please try again later !",
-        });
-      });
-  }, [user.reload]);
+    }, [user.reload]);
 
     return (
         <div className='login-container'>
@@ -91,7 +96,7 @@ const UpdatePatient = () => {
         </Alert>
       )}
 
-            <Form>
+            <Form onSubmit={Updateuser}>
                 <Form.Group className="mb-3" controlId="register-name">
                     <Form.Label>Name : </Form.Label>
                     <Form.Control type="text" placeholder="Full Name : " 
@@ -109,9 +114,9 @@ const UpdatePatient = () => {
 
                 <Form.Group className="mb-3" controlId="register-phone">
                     <Form.Label>phone : </Form.Label>
-                    <Form.Control type="number" placeholder="Phone : "
-                    value={user.email}
-                    onChange={(e) => setuser({ ...user, email: e.target.value })} />
+                    <Form.Control type="text" placeholder="Phone : "
+                    value={user.phone}
+                    onChange={(e) => setuser({ ...user, phone: e.target.value })} />
                 </Form.Group>
 
 

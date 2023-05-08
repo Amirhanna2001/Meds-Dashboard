@@ -7,13 +7,12 @@ import axios from "axios";
 
 const AddPatient = () => {
     const auth = getAuthUser();
-    const [med, setMed] = useState({
+    const [user, setuser] = useState({
 
       Name: "",
-      Description: "",
-      Price: "",
-      ExpireDate: "",
-      CategoryId: "",
+      email: "",
+      password: "",
+      phone: "",
       err: "",
       loading: false,
       success: null,
@@ -21,34 +20,31 @@ const AddPatient = () => {
   
     const image = useRef(null);
   
-    const createMed = (e) => {
+    const createUser = (e) => {
       e.preventDefault();
   
-      setMed({ ...med, loading: true });
+      setuser({ ...user, loading: true });
   
       const formData = new FormData();
-      formData.append("Name", med.Name);
-      formData.append("Description", med.Description);
-      formData.append("Price", med.Price);
-      formData.append("ExpireDate", med.ExpireDate);
-      formData.append("CategoryId", med.CategoryId);
+      formData.append("Name", user.Name);
+      formData.append("email", user.email);
+      formData.append("role", user.role);
+      formData.append("phone", user.phone);
       if (image.current.files && image.current.files[0]) {
         formData.append("Image", image.current.files[0]);
       }
       axios
-        .post("http://localhost:4000/Medicines/Create", formData, {
+        .post("http://localhost:4000/Users/", formData, {
           headers: {
             token: auth.token,
-            "Content-Type": "multipart/form-data",
           },
         })
         .then((resp) => {
-          setMed({
+          setuser({
             Name: "",
-            Description: "",
-            Price: "",
-            ExpireDate: "",
-            CategoryId: "",
+            email: "",
+            password: "",
+            phone: "",
             err: "",
             loading: false,
             success: "Medicine Created Successfully !",
@@ -56,8 +52,8 @@ const AddPatient = () => {
           image.current.value = null;
         })
         .catch((err) => {
-          setMed({
-            ...med,
+          setuser({
+            ...user,
             loading: false,
             success: null,
             err: "Something went wrong, please try again later !",
@@ -75,7 +71,7 @@ const AddPatient = () => {
                 This is simple alert
             </Alert>
 
-            <Form onSubmit={create}>
+            <Form >
                 <Form.Group className="mb-3" controlId="register-name">
                     <Form.Label>Name : </Form.Label>
                     <Form.Control type="text" placeholder="Full Name : " />
@@ -94,6 +90,11 @@ const AddPatient = () => {
                 <Form.Group className="mb-3" controlId="register-name">
                     <Form.Label>Type : </Form.Label>
                     <Form.Control type="text" placeholder="Role" />
+                </Form.Group>
+                
+                <Form.Group className="mb-3" controlId="register-name">
+                    <Form.Label>Password : </Form.Label>
+                    <Form.Control type="text" placeholder="Password" />
                 </Form.Group>
 
                 <Button variant="btn btn-dark w-40" type="submit">

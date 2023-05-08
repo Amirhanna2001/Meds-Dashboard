@@ -24,6 +24,7 @@ const UpdateMeds  = () => {
     const image = useRef(null);
 
   const updateMed = (e) => {
+
     e.preventDefault();
 
     setMed({ ...med, loading: true });
@@ -38,7 +39,7 @@ const UpdateMeds  = () => {
         formData.append("Image", image.current.files[0]);
       }
     axios
-      .put("http://localhost:4000/Medicines/Edit/" + id, formData, {
+      .put("http://localhost:4000/Medicines/" + id, formData, {
         headers: {
           token: auth.token,
           "Content-Type": "multipart/form-data",
@@ -63,17 +64,21 @@ const UpdateMeds  = () => {
   };
 
   useEffect(() => {
+    // let { id } = useParams();
+
+    console.log("http://localhost:4000/Medicines/" + id);
     axios
-      .get("http://localhost:4000/Medicines/GetMedicine/" + id)
+      .get("http://localhost:4000/Medicines/"+id )
       .then((resp) => {
+        console.log(resp);
         setMed({
           ...med,
-          Name: resp.data.Name,
-          Description: resp.data.Description,
-          image_url: resp.data.image_url,
-          Price:resp.data.Price,
-          ExpireDate:resp.data.ExpireDate,
-          CategoryId:resp.data.CategoryId
+          Name: resp.data[0].Name,
+          Description: resp.data[0].Description,
+          image_url: resp.data[0].image_url,
+          Price:resp.data[0].Price,
+          ExpireDate:resp.data[0].ExpireDate,
+          CategoryId:resp.data[0].CategoryId
         });
       })
       .catch((err) => {
@@ -84,8 +89,9 @@ const UpdateMeds  = () => {
           err: "Something went wrong, please try again later !",
         });
       });
-  }, [med.reload]);
-
+      
+  }, [id]);
+console.log(med);
   return (
     <div className="login-container">
       <h1>Update Medicine Form</h1>

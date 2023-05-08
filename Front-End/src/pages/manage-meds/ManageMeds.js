@@ -34,14 +34,14 @@ const ManageMeds = () => {
 
   const deleteMed = (id) => {
     axios
-      .delete("http://localhost:4000/Medicines/Delete/"+ id, {
+      .delete("http://localhost:4000/Medicines/"+ id, {
         headers: {
           token: auth.token,
         },
       })
       .then((resp) => {
         setMeds({ ...meds, reload: meds.reload + 1 });
-      })
+      }) 
       .catch((err) => {});
   };
 
@@ -109,7 +109,7 @@ const ManageMeds = () => {
                     
                 </tbody>
             </Table>
-        </div>
+        </div> 
     );
 };
 

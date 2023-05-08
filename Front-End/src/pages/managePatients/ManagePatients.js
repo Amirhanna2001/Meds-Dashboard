@@ -33,7 +33,7 @@ const ManagePatients = () => {
     
       const deleteUser = (id) => {
         axios
-          .delete("http://localhost:4000/Users/Delete/"+ id, {
+          .delete("http://localhost:4000/Users/"+ id, {
             headers: {
               token: auth.token,
             },
@@ -76,7 +76,7 @@ const ManagePatients = () => {
               <td> {cat.Name} </td> 
               <td>{cat.email}</td>
               <td>{cat.phone}</td>
-              <td>{cat.role == 1?"Admin":"User"}</td>
+              <td>{cat.role === 1?"Admin":"User"}</td>
 
 
               <td>
@@ -91,9 +91,6 @@ const ManagePatients = () => {
                   to={"" + cat.ID}
                   className="btn btn-sm btn-primary mx-2">
                   Update
-                </Link>
-                <Link to={"" + cat.ID} className="btn btn-sm btn-info">
-                  show
                 </Link>
               </td>
             </tr>

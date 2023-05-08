@@ -51,7 +51,7 @@ const Home = () => {
             <>
                 {/* Filter */}
             <Form onSubmit={searchMed}>
-                <Form.Group className='mb-3 d-flex' >
+                <Form.Group className='mb-3 d-flex' > 
                     <Form.Control 
                         required
                         type='text' placeholder='Search Meds' className='rounded-0'
@@ -65,8 +65,8 @@ const Home = () => {
             <div className='row'>
                {meds.results.map((med)=>(
                   <div className="col-3 card-movie-container" key={med.ID}>
-                    <MedsCard
-                        ID = {med.ID}
+                    <MedsCard 
+                        ID = {med.ID} 
                         Name= {med.Name}
                         Description= {med.Description}
                         Price = {med.Price}

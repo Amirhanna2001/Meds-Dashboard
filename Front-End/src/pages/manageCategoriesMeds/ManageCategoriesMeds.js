@@ -32,7 +32,7 @@ const ManageCategoriesMeds = () => {
 
   const deleteCat = (id) => {
     axios
-      .delete("http://localhost:4000/Categories/Delete/"+ id, {
+      .delete("http://localhost:4000/Categories/"+ id, {
         headers: {
           token: auth.token,
         },
@@ -85,13 +85,13 @@ const ManageCategoriesMeds = () => {
                   className="btn btn-sm btn-primary mx-2">
                   Update
                 </Link>
-                <Link to={"" + cat.Id} className="btn btn-sm btn-info">
+                {/* <Link to={"" + cat.Id} className="btn btn-sm btn-info">
                   show
-                </Link>
+                </Link> */}
               </td>
             </tr>
           ))}
-                    
+                     
                 </tbody>
 
             </Table>

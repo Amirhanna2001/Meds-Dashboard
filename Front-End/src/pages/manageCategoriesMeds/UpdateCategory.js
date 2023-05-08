@@ -17,24 +17,29 @@ const UpdateCategory = () => {
         loading: false,
         success: null,
       });
-      const UpdateCat = (e) => {
+      const UpdateCat = (e) => { 
         e.preventDefault();
     
         setCat({ ...cat, loading: true });
     
         const formData = new FormData();
-        formData.append("Name", cat.Name);
-        formData.append("Description", cat.Description); 
+        let obj = {
+          name:cat.Name,
+          description:cat.Description,
+
+        }
+        console.log(id);
         axios
-          .put("http://localhost:4000/Categories/Edit/"+id, formData, {
+          .put(`http://localhost:4000/Categories/${id}`, obj, {
             headers: {
               token: auth.token,
                     },
           })
           .then((resp) => {
             setCat({
-              Name: "",
-              Description: "",
+              ...cat,
+              name: "",
+              description: "",
               err: "",
               loading: false,
               success: "Category Updated Successfully !",
@@ -50,6 +55,26 @@ const UpdateCategory = () => {
             });
           });
       };
+      useEffect(() => {
+        axios
+          .get("http://localhost:4000/Categories/" + id)
+          .then((resp) => {
+            console.log(resp);
+            setCat({
+              ...cat,
+              Name: resp.data[0].Name,
+              Description: resp.data[0].Description,
+            });
+          })
+          .catch((err) => {
+            setCat({
+              ...cat,
+              loading: false,
+              success: null,
+              err: "Something went wrong, please try again later !",
+            });
+          });
+      }, [cat.reload]);
     return (
         <div className='login-container'>
             <h1>Update Category medicines</h1>
@@ -87,7 +112,7 @@ const UpdateCategory = () => {
             rows={5}></textarea>
         </Form.Group>
 
-                <Button variant="btn btn-dark w-40" type="submit">
+                <Button variant="btn btn-dark w-100" type="submit">
                     Update Category medicines
                 </Button>
             </Form>

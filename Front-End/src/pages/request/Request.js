@@ -23,7 +23,9 @@ const Request = () => {
                         <td>Panadol</td>
                         <td>Accept</td>
                         <td>
-                            <button className='btn btn-sm btn-danger'>Delete</button>
+                            <button className='btn btn-sm btn-danger m-1'>Delete</button>
+                            <button className='btn btn-sm btn-primary m-1'>Accept</button>
+
                         </td>
                     </tr>
                 </tbody>

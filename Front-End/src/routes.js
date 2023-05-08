@@ -8,7 +8,9 @@ import ManageMeds from "./pages/manage-meds/ManageMeds";
 import AddMeds from "./pages/manage-meds/AddMeds";
 import UpdateMeds from "./pages/manage-meds/UpdateMeds";
 import ManageCategoriesMeds from "./pages/manageCategoriesMeds/ManageCategoriesMeds";
+import MedsByCats from "./pages/manageCategoriesMeds/MedsByCat";
 import AddCategory from "./pages/manageCategoriesMeds/AddCategory";
+import UserCats from "./pages/manageCategoriesMeds/UserCats";
 import UpdateCategory from "./pages/manageCategoriesMeds/UpdateCategory";
 import ManagePatients from "./pages/managePatients/ManagePatients";
 import AddPatient from "./pages/managePatients/AddPatient";
@@ -33,6 +35,20 @@ export const routes = createBrowserRouter([
                 path: ":id",
                 element: <MedsDetails />,
             },
+            {
+                path: "/manage-categories-meds",
+                    children: [
+                        {
+                            path:"UserCats",
+                            element:<UserCats/>
+                        },
+                        {
+                            path:":id",
+                            element:<MedsByCats/>
+                        }
+                        
+                    ]
+            },
 
                // GUEST MIDDLEWARE
             {
@@ -46,6 +62,8 @@ export const routes = createBrowserRouter([
                     path: "/register",
                     element: <Register />,
                 },
+                
+                        
                 ],
             },
             {
@@ -88,6 +106,7 @@ export const routes = createBrowserRouter([
                             path: ':id',
                             element: <UpdateCategory />
                         }
+                        
                     ]
                 },
     

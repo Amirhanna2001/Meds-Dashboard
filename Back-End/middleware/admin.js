@@ -17,4 +17,4 @@ const Admin = async (req,res,next)=>{
 
 }
 
-module.exports = Admin;
+module.exports = Admin; 

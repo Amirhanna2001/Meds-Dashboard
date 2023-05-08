@@ -9,8 +9,8 @@ const AddCategory = () => {
     const auth = getAuthUser();
     const [cat, setCat] = useState({
 
-      Name: "",
-      Description: "",
+      name: "",
+      description: "",
       err: "",
       loading: false,
       success: null,
@@ -23,18 +23,18 @@ const AddCategory = () => {
       setCat({ ...cat, loading: true });
   
       const formData = new FormData();
-      formData.append("Name", cat.Name);
-      formData.append("Description", cat.Description); 
+      formData.append("name", cat.name);
+      formData.append("description", cat.description); 
       axios
-        .post("http://localhost:4000/Categories/Create", formData, {
+        .post("http://localhost:4000/Categories/", formData, {
           headers: {
             token: auth.token
                   },
         })
         .then((resp) => {
           setCat({
-            Name: "",
-            Description: "",
+            name: "",
+            description: "",
             err: "",
             loading: false,
             success: "Category Created Successfully !",
@@ -67,8 +67,8 @@ const AddCategory = () => {
 <Form onSubmit={createCat}>
         <Form.Group className="mb-3">
           <Form.Control
-            value={cat.Name}
-            onChange={(e) => setCat({ ...cat, Name: e.target.value })}
+            value={cat.name}
+            onChange={(e) => setCat({ ...cat, name: e.target.value })}
             type="text"
             required
             placeholder="Category Name"
@@ -80,10 +80,10 @@ const AddCategory = () => {
           <textarea
             className="form-control"
             placeholder="Description"
-            value={cat.Description}
+            value={cat.description}
             required
             onChange={(e) =>
-                setCat({ ...cat, Description: e.target.value })
+                setCat({ ...cat, description: e.target.value })
             }
             rows={5}></textarea>
         </Form.Group>
