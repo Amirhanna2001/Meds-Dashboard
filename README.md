@@ -1,2 +1,5 @@
 # Meds-Dashboard
-## This is for internet application term project for my college 
+## This is for internet application project for my college 
+
+## Tools : 
+NODE.JS and   REACT JS 
